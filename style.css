@@ -1,0 +1,26 @@
+:root{
+    --primary: rgb(212, 236, 196);
+    --weight: 3px;
+    --width: 300px;
+}
+
+project-card{
+    display: grid;
+    border: var(--weight) solid;
+    margin: var(--weight);
+    
+    height: fit-content;
+    width: fit-content;
+
+    max-width: var(--width);
+    background-color: var(--primary);
+    
+}
+
+
+#card-container{
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
