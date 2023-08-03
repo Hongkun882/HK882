@@ -33,7 +33,7 @@ function init(){
     })
 
     const button_remote = document.querySelector("#remote");
-    button_local.addEventListener("click",function(){
+    button_remote.addEventListener("click",function(){
 
         remote_load();
     })
@@ -63,6 +63,20 @@ function localStorage_load(){
 
 }
 
-function remote_load(){
-    
+async function remote_load(){
+    let online_data;
+    await fetch("https://my-json-server.typicode.com/typicode/demo/posts").then(res => res.json()).
+    then(data => project_data = data)
+
+    for (let child of online_data){
+        let card = document.createElement("project-card");
+        card.setData = {
+            "title": child["title"],
+            "source": child["source"],
+            "text": child["text"],
+            "link": child["link"]
+        }
+
+        body.appendChild(card);
+    }
 }
