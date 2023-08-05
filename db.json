@@ -3,22 +3,28 @@
     "data": 
     [
         {
+            "id": "0",
             "title": "Accumulator",
             "source": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y3B1fGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
             "text": "9-bit processor that could run programs for LFSR encoding and decoding using System Verilog",
-            "link": "https://github.com/Hongkun882"
+            "link": "https://github.com/Hongkun882",
+            "type": "remote"
         },
         {
+            "id": "1",
             "title": "Camping Review",
             "source": "https://images.unsplash.com/photo-1487730116645-74489c95b41b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Y2FtcGluZ3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
             "text": "A website to show the reviews of Camping places.",
-            "link": "https://github.com/Hongkun882"
+            "link": "https://github.com/Hongkun882",
+            "type": "remote"
         },
-        {
+        {   
+            "id": "2",
             "title": "Random title",
             "source": "https://source.unsplash.com/random",
             "text": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio voluptas impedit consequatur, minima ex iste quo ipsum quae dolores, quod voluptate amet cum velit ad officiis? Pariatur est quod necessitatibus!",
-            "link": "https://github.com"
+            "link": "https://github.com",
+            "type": "remote"
         }
     ]
 }

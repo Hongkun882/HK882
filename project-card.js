@@ -1,3 +1,4 @@
+
 class ProjectCard extends HTMLElement{
 
     constructor(){
@@ -66,7 +67,7 @@ class ProjectCard extends HTMLElement{
         if (!data){
             return
         }
-
+        
         let title = this.shadowRoot.querySelector("h2");
         let img = this.shadowRoot.querySelector("img");
         let description = this.shadowRoot.querySelector("p");
@@ -77,9 +78,130 @@ class ProjectCard extends HTMLElement{
         description.textContent = data['text'];
         link.setAttribute("href", data["link"]);
 
+        let edit_button = this.shadowRoot.querySelector(".edit");
+        
+        edit_button.addEventListener("click", function(){
+            let container = document.querySelector("#update_form_container");
+            let form = document.createElement("form");
+            form.innerHTML = `
+            
+            <label for="update_img">image link: </label>
+            <input type="text" id="update_img" name="img" required>
+            <br>
+            <label for="update_title">title: </label>
+            <input type="text" id="update_title" name="title" required>
+            <br>
+            <label for="update_description">Description</label>
+            <input type="text" id="update_description" name="description" required>
+            <br>
+            <label for="update_link">Read more link </label>
+            <input type="text" id="update_link" name="link" required>
+            <br>
+            <button type="submit" class="submit">submit</button>
+            
+            `
+            container.appendChild(form);
+            editCard(data["id"], data["type"]);
+        });
 
+        let delete_button = this.shadowRoot.querySelector(".delete");
+        delete_button.addEventListener("click", function(){
+            
+            deleteCard(data["id"], data["type"]);
+        })
     }
 
 }
 
 customElements.define("project-card", ProjectCard);
+
+
+async function editCard(id, type){
+    let project_data;
+    if (type == "remote"){
+        await fetch("https://api.jsonbin.io/v3/b/64ce8eb69d312622a38c728e").then(res => res.json()).
+        then(data => project_data = data.record.data)
+
+        
+
+    }else{
+        project_data = JSON.parse(window.localStorage.getItem("projects"))
+    }
+}
+
+async function deleteCard(id, type){
+    
+    let project_data;
+    if (type == "remote"){
+        await fetch("https://api.jsonbin.io/v3/b/64ce8eb69d312622a38c728e").then(res => res.json()).
+        then(data => project_data = data.record.data);
+
+        let new_data = project_data.filter((project) => project.id !== id);
+        console.log(new_data);
+        let data = {"data": new_data}
+        await fetch("https://api.jsonbin.io/v3/b/64ce8eb69d312622a38c728e",{
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "X-Master-Key": "$2b$10$qMSfokprJCm9trmr4IakZuGMbwYtJOIEyUaAN1CaYdl4KrdpwD8X6",
+              },
+            body: JSON.stringify(data)
+        })
+
+        refresh(new_data);
+
+    }else{
+        project_data = JSON.parse(window.localStorage.getItem("projects"));
+
+        let new_data = project_data.filter((project) => project.id !== id);
+        
+        window.localStorage.removeItem("projects");
+        window.localStorage.setItem("projects", JSON.stringify(new_data));
+        refresh(new_data);
+
+    }
+
+
+
+}
+
+function refresh(project_data){
+    
+    let container = document.querySelector("#card-container");
+    while (container.firstChild){
+        container.removeChild(container.firstChild);
+    }
+
+    for (let child of project_data){
+        let card = document.createElement("project-card");
+        card.setData = {
+            "id": child["id"],
+            "title": child["title"],
+            "source": child["source"],
+            "text": child["text"],
+            "link": child["link"],
+            "type": child["type"]
+        }
+
+        container.appendChild(card);
+    }
+
+
+
+}
+
+
+function update_form(data){
+    
+    let title = this.shadowRoot.querySelector("#title");
+    title.value = data.title;
+    let img = this.shadowRoot.querySelector("#img");
+    img.value = data.source
+
+    let description = this.shadowRoot.querySelector("#description");
+    description.value = data.text;
+
+    let link = this.shadowRoot.querySelector("#link");
+    link.value = data.link
+
+}
