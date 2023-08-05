@@ -216,7 +216,7 @@ async function deleteCard(id, type){
         then(data => project_data = data.record.data);
 
         let new_data = project_data.filter((project) => project.id !== id);
-        console.log(new_data);
+        
         let data = {"data": new_data}
         await fetch("https://api.jsonbin.io/v3/b/64ce8eb69d312622a38c728e",{
             method: "PUT",

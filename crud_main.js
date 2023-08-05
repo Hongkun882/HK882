@@ -36,10 +36,51 @@ function init(){
         remote_load();
     })
 
-    const form = document.querySelector("form");
-    form.addEventListener("submit", function(){
+    let form = document.querySelector("form.add");
+    form.addEventListener("submit", async function(){
+        
+        let form_data = new FormData(form);
+        let new_data = {
+            "id":`${Math.floor(Math.random()*100)}`,
+            "title": `${form_data.get("title")}`,
+            "source": `${form_data.get("img")}`,
+            "text": `${form_data.get("description")}`,
+            "link": `${form_data.get("link")}`,
+            "type": `${form_data.get("type")}`
+        }
+        let project_data;
+        
+        if (new_data["type"] == "remote"){
+            await fetch("https://api.jsonbin.io/v3/b/64ce8eb69d312622a38c728e").then(res => res.json()).
+            then(data => project_data = data.record.data);
+            
+            project_data.push(new_data);
+            let data = {"data": project_data};
+            
+            await fetch("https://api.jsonbin.io/v3/b/64ce8eb69d312622a38c728e",{
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "X-Master-Key": "$2b$10$qMSfokprJCm9trmr4IakZuGMbwYtJOIEyUaAN1CaYdl4KrdpwD8X6",
+              },
+            body: JSON.stringify(data)
+            })
+
+            debugger
 
 
+        }else{
+            project_data = JSON.parse(window.localStorage.getItem("projects"));
+            if (!project_data){
+                window.localStorage.setItem("project", JSON.stringify([new_data]))
+            }else{
+                project_data.push(new_data);
+                window.localStorage.removeItem("projects");
+                window.localStorage.setItem("projects", JSON.stringify(project_data));
+                
+            }
+        }
+        
 
     })
     
@@ -88,3 +129,27 @@ async function remote_load(){
     }
 }
 
+function refresh(project_data){
+    
+    let container = document.querySelector("#card-container");
+    while (container.firstChild){
+        container.removeChild(container.firstChild);
+    }
+
+    for (let child of project_data){
+        let card = document.createElement("project-card");
+        card.setData = {
+            "id": child["id"],
+            "title": child["title"],
+            "source": child["source"],
+            "text": child["text"],
+            "link": child["link"],
+            "type": child["type"]
+        }
+
+        container.appendChild(card);
+    }
+
+
+
+}
