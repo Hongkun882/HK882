@@ -65,9 +65,10 @@ function localStorage_load(){
 
 async function remote_load(){
     let online_data;
-    await fetch("https://my-json-server.typicode.com/typicode/demo/posts").then(res => res.json()).
-    then(data => project_data = data)
 
+    await fetch("https://my-json-server.typicode.com/Hongkun882/HK882/data").then(res => res.json()).
+    then(data => online_data = data)
+    const body = document.querySelector('#card-container');
     for (let child of online_data){
         let card = document.createElement("project-card");
         card.setData = {

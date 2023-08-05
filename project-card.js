@@ -11,6 +11,14 @@ class ProjectCard extends HTMLElement{
         let link = document.createElement("a");
         link.textContent = "Read More";
         
+        let edit_button = document.createElement("button");
+        edit_button.className = "edit";
+        edit_button.textContent = "edit";
+
+        let delete_button = document.createElement("button");
+        delete_button.className = "delete";
+        delete_button.textContent = "delete";
+
         let style = document.createElement("style");
         style.textContent = `
 
@@ -24,10 +32,20 @@ class ProjectCard extends HTMLElement{
             place-items: center;
             font-family: Georgia, 'Times New Roman', Times, serif;
         }
-        
+        footer{
+            display:flex;
+            flex-direction: row;
+            justify-content: center;
+
+        }
+        button{
+            margin: 1rem;
+        }
         `;
 
-        
+        let footer = document.createElement("footer");
+        footer.appendChild(edit_button);
+        footer.appendChild(delete_button);
         
 
         let content_container = document.createElement("section");
@@ -36,9 +54,11 @@ class ProjectCard extends HTMLElement{
         content_container.appendChild(description);
         content_container.appendChild(link);
         
+        
         shadow.appendChild(img);
         shadow.appendChild(content_container);
-        shadow.appendChild(style)
+        shadow.appendChild(footer);
+        shadow.appendChild(style);
     }
 
     set setData(data){
